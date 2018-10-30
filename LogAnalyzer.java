@@ -8,8 +8,8 @@ public class LogAnalyzer
 {
     // Where to calculate the access counts.
     private int[] hourCounts;
-    private int[] dailyCounts;// Where to calculate the hourly access counts.
-    private int[] monthlyCounts;// Where to calculate the hourly access counts.
+    private int[] dailyCounts;// Where to calculate the daily access counts.
+    private int[] monthlyCounts;// Where to calculate the monthly access counts.
     // Use a LogfileReader to access the data.
     private LogfileReader reader;
 
@@ -75,6 +75,10 @@ public class LogAnalyzer
         reader.printData();
     }
     
+    /**
+     * finds the number of accesses
+     * @Returns returns total accesses
+     */
     public int numberofAccesses()
     {
         int total = 0;
@@ -87,6 +91,10 @@ public class LogAnalyzer
            return total;
     }
     
+    /**
+     * Finds the busiest or highest traffic
+     * @Returns busiest hour
+     */
      public int busiestHour()
      {
         int numOfAccessesAtBusiest = 0;
@@ -109,9 +117,13 @@ public class LogAnalyzer
         return busiest;
     }
     
+    /**
+     * Finds quiestest or lowest traffic hour
+     * @Returns quiestest hour
+     */
     public int quietestHour()
     {
-        int numOfAccessesAtQuietest = 9999;
+        int numOfAccessesAtQuietest = hourCounts[0];
         int quietest = 0;
         int index = 0;
         
@@ -131,6 +143,10 @@ public class LogAnalyzer
         return quietest;
     }
     
+    /**
+     * Finds the busiest or highest traffic two hour period
+     * @Returns busiest two hour period
+     */
     public int twoHourBusiest()
     {
             int numOfAccessesAtBusiest = 0;
@@ -139,7 +155,7 @@ public class LogAnalyzer
                         
             while(index < hourCounts.length - 1)
             {
-                if (numOfAccessesAtBusiest < hourCounts[index] + hourCounts[index + 1])
+                if (numOfAccessesAtBusiest < hourCounts[index] + hourCounts[(index + 1)%24])
                 {
                     busiest = index;
                     numOfAccessesAtBusiest = hourCounts[index] + hourCounts[index + 1];
@@ -153,6 +169,9 @@ public class LogAnalyzer
             return busiest;
     }
     
+    /**
+     * Analyze the daily access data from the log file
+     */
     public void analyzeDailyData()
     {
         while(reader.hasNext())
@@ -163,6 +182,9 @@ public class LogAnalyzer
         }
     }
     
+    /**
+     * Analyze the monthly access data from the log file.
+     */
     public void analyzeMonthlyData()
     {
         while(reader.hasNext())
@@ -173,6 +195,10 @@ public class LogAnalyzer
         }
     }
     
+    /**
+     * Finds the quietest or lowest traffic day
+     * @Returns quiestest day
+     */
     public int quietestDay()
     {
         int quietest = 1;
@@ -184,6 +210,10 @@ public class LogAnalyzer
         return quietest;
     }
     
+    /**
+     * Finds the busiest or highest traffic day
+     * @Returns buusiest day
+     */
     public int busiestDay()
     {
         int busiest = 1;
@@ -196,6 +226,10 @@ public class LogAnalyzer
         return busiest;
     }
     
+    /**
+     * Finds the average accesses per month
+     * @Returns the average
+     */
     public int avgAccessesPerMonth()
     {
         int numMonths = 0;
@@ -209,17 +243,22 @@ public class LogAnalyzer
         return totalAccesses/numMonths;
     }
     
-    public int totalAccessPerMonth()
+    /**
+     * Finds the total accesses per month
+     */
+    public void totalAccessesPerMonth()
     {
-        int numMonths = 0;
-        
-        for (int i = 1; i<= 12; i++)
+         System.out.println("Month: Count");
+        for(int month = 1; month < monthlyCounts.length; month++)
         {
-            //something here;
+            System.out.println(month + ": " + monthlyCounts[month]);
         }
-        return numMonths;
-    }
-    
+     }
+     
+    /**
+     * Finds the quietest or lowest traffic month
+     * @Returns quiestest month
+     */
     public int quietestMonth()
     {
         int quietest = 1;
@@ -231,6 +270,10 @@ public class LogAnalyzer
         return quietest;
     }
     
+    /**
+     * Finds busiest or highest traffic month
+     * @Returns busiest month
+     */
     public int busiestMonth()
     {
         int busiest = 1;

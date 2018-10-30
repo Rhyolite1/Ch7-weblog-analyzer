@@ -95,6 +95,7 @@ public class LogEntry implements Comparable<LogEntry>
     {
         return dataValues[DAY];
     }
+    
     /**
      * Create a string representation of the data.
      * This is not necessarily identical with the
